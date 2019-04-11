@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Assignment 2 </title>
+  <!--  <link rel="stylesheet" href="/css/styles.css" type="text/css"> -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <style>
+  body { background: #212121 !important; }
+
+  #container {
+    height: 100%;
+    width: 100%;
+
+
+    position: fixed;
+    top: 2%;
+
+}
+.list-group-item {
+background-color: transparent;
+color: #e6ffff;
+border-bottom: 1px solid #e6ffff;
+}
+
+  </style>
+  </head>
+  <body>
+    <div id='container' class="text-light">
+    {% if user %}
+    <table style="width:100%" class="text-center mt-3 mb:3 " >
+    <tr>
+    <td>  <a class="text-info" href='{{url}}'> Logout </a> </td>
+    </tr>
+  </table>
+  <p class="mt-5 text-center">
+    <div class="text-center">
+      Hi
+    {%else%}
+    <div id ='container'class="text-center">
+    <h2>Welcome to Abcd</h2>
+
+    <p>Click here to <a class="text-info" href='{{url}}'> {{url_string}} </a></p>
+    {% endif %}
+  </div>
+      </div>
+
+    <br/>
+
+
+    <br/>
+    </div>
+</body>
