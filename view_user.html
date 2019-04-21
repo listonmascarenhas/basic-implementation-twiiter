@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title> Assignment 2 </title>
+<!--  <link rel="stylesheet" href="/css/styles.css" type="text/css"> -->
+<link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<style>
+body { background: #212121 !important; }
+
+#container {
+  height: 100%;
+  width: 100%;
+
+
+  position: fixed;
+  top: 2%;
+
+}
+.list-group-item {
+background-color: transparent;
+color: #e6ffff;
+border-bottom: 1px solid #e6ffff;
+}
+
+</style>
+</head>
+  <body>
+    <form  action="/user" method="post">
+  <p class="mt-5  text-light text-center">{{full_name}}
+    {% if same_user=='yes' %}
+    <input class="ml-5" type="hidden" name="button" value="{{follow}}">
+    {% else %}
+    <input class="ml-5" type="submit" name="button" value="{{follow}}">
+    <input type="hidden" name="username" value="{{username}}">
+    {% endif %}
+  </p>
+  </form>
+    <ul class="text-left list-group ml-5 mr-5" style="list-style-type:none">
+      {% for i in tweet_list %}
+      <li class=" list-group-item  "><a href="user?username={{username}}">{{username}}</a>
+        <p class="mt-3">{{i}}</p>
+      </li>
+      {% endfor %}
+  </ul>
+  </body>
+</html>

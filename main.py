@@ -1,11 +1,17 @@
 import webapp2
 import jinja2
 import os
+import logging
 from google.appengine.ext import ndb
 from google.appengine.api import users
+from google.appengine.api import search
+from datetime import datetime
 
 from myuser import MyUser
-
+from myuser import TweetModel
+from username import UsernamePage
+from search import Search
+from view_user import User
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions = ['jinja2.ext.autoescape'],
@@ -17,8 +23,9 @@ class MainPage(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'text/html'
         url = ''
         url_string = ''
+        tweet_list =[]
         user=users.get_current_user()
-
+        username = ''
         if user:
             url = users.create_logout_url(self.request.uri)
             url_string = 'logout'
@@ -26,9 +33,14 @@ class MainPage(webapp2.RequestHandler):
             myuser_key = ndb.Key('MyUser',user.user_id())
             myuser = myuser_key.get()
             if myuser == None:
-                myuser = MyUser(id=user.user_id() ,email_address=user.email())
-                myuser.put()
+                self.redirect('/userName')
 
+            else:
+                username = myuser.username
+                display_query = TweetModel.query(TweetModel.tweet_id == user.user_id()).fetch()
+
+                for tweet in display_query:
+                    tweet_list.append(tweet.tweet_text)
 
         else:
             url = users.create_login_url(self.request.uri)
@@ -38,10 +50,27 @@ class MainPage(webapp2.RequestHandler):
             'url': url,
             'url_string':url_string,
             'user': user,
+            'tweet_list' : tweet_list,
+            'username' : username
         }
         template = JINJA_ENVIRONMENT.get_template('main.html')
         self.response.write(template.render(template_values))
 
+    def post(self):
+        self.response.headers['Content-Type'] = 'text/html'
+        template = JINJA_ENVIRONMENT.get_template('main.html')
+        user=users.get_current_user()
+        action = self.request.get('button')
+        if action=='Post':
+            tweet_text = self.request.get('tweet_text')
+            myuser_key = ndb.Key('MyUser',user.user_id())
+            myuser = myuser_key.get()
+            tweet_key = TweetModel(tweet_id=user.user_id(),tweet_text = tweet_text,tweet_time = datetime.now(),tweet_username = myuser.username)
+            tweet_key.put()
+            self.redirect('/')
 app = webapp2.WSGIApplication([
     ('/',MainPage),
+    ('/userName',UsernamePage),
+    ('/search',Search),
+    ('/user',User)
 ], debug =True)

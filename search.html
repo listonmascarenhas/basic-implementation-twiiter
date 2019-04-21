@@ -1,0 +1,40 @@
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title> Assignment 2 </title>
+<!--  <link rel="stylesheet" href="/css/styles.css" type="text/css"> -->
+<link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<style>
+body { background: #212121 !important; }
+
+#container {
+  height: 100%;
+  width: 100%;
+
+
+  position: fixed;
+  top: 2%;
+
+}
+.list-group-item {
+background-color: transparent;
+color: #e6ffff;
+border-bottom: 1px solid #e6ffff;
+}
+
+</style>
+</head>
+  <body>
+  <form class="text-center mt-3 " action="/search" method="post">
+    <input type="text" name="tweet_search" value="" placeholder="Search">
+    <input type="submit" name="button" value="Search">
+  </form>
+  <ul class="text-left list-group ml-5 mr-5" style="list-style-type:none">
+{% for i in tweet_username_list %}
+  <li class=" list-group-item  "><a href="user?username={{i}}">{{i}}</a>
+    <p class="mt-3">{{tweet_text_list[loop.index0]}}</p>
+  </li>
+  {% endfor %}
+  </ul>
+  </body>
+</html>
