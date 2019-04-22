@@ -35,12 +35,13 @@ class Search(webapp2.RequestHandler):
                     tweet_username_list = []
                     tweet_text_list = []
             else:
-                username_query = MyUser.query(MyUser.username == tweet_search).fetch()
+                username_query = MyUser.query().fetch()
                 tweet_content_query = TweetModel.query().fetch()
 
                 for user in username_query:
-                    tweet_username_list.append(user.username)
-                    tweet_text_list.append("")
+                    if any(word in user.username for word in tweet_search.split()):
+                        tweet_username_list.append(user.username)
+                        tweet_text_list.append("")
 
                 for tweet in tweet_content_query:
                     if all(word in tweet.tweet_text for word in tweet_search.split()):

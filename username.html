@@ -26,11 +26,17 @@
   <body>
     <form class="text-center mt-5" action="/userName" method="post">
       <p class="text-light">Enter username:</p>
+      {% if myuser != None %}
+      <input type="text" name="username" value="{{myuser.username}}" readonly >
+     <input type="text" name="edit" value="yes" hidden>
+       {%else%}
        <input type="text" name="username" value="" placeholder="Enter username">
+         <input type="text" name="edit" value="no" hidden>
+       {%endif%}
        <p  class="text-light mt-2">Enter full name:</p>
-       <input   type="text" name="full_name" value="" placeholder="Enter full name">
+       <input   type="text" name="full_name" value="{{myuser.full_name}}" placeholder="Enter full name">
        <p  class="text-light mt-2">Enter description:</p>
-       <input  type="text" name="description" value="" placeholder="Enter description" maxlength="280">
+       <input  type="text" name="description" value="{{myuser.description}}" placeholder="Enter description" maxlength="280">
        <br>
        <input class="mt-3 " type="submit" name="button" value="Submit">
     </form>

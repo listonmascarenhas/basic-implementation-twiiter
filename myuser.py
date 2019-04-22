@@ -7,10 +7,11 @@ class MyUser(ndb.Model):
     following = ndb.StringProperty(repeated = True)
     full_name = ndb.StringProperty()
     description = ndb.StringProperty()
-    userid = ndb.StringProperty() 
+    userid = ndb.StringProperty()
+    no_of_tweets = ndb.IntegerProperty(default = 0)
 
 class TweetModel(ndb.Model):
-    tweet_id = ndb.StringProperty()
+    tweet_id = ndb.IntegerProperty()
     tweet_text = ndb.StringProperty()
     tweet_time = ndb.DateTimeProperty()
     tweet_username = ndb.StringProperty()

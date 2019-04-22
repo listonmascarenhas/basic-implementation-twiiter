@@ -12,6 +12,7 @@ from myuser import TweetModel
 from username import UsernamePage
 from search import Search
 from view_user import User
+from tweet_edit import TweetEdit
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions = ['jinja2.ext.autoescape'],
@@ -37,10 +38,12 @@ class MainPage(webapp2.RequestHandler):
 
             else:
                 username = myuser.username
-                display_query = TweetModel.query(TweetModel.tweet_id == user.user_id()).fetch()
-
-                for tweet in display_query:
-                    tweet_list.append(tweet.tweet_text)
+                following_list = myuser.following
+                following_list.append(username)
+                for following in following_list:
+                    display_query = TweetModel.query(TweetModel.tweet_username == following).fetch(limit = 50)
+                    for tweet in display_query:
+                        tweet_list.append(tweet)
 
         else:
             url = users.create_login_url(self.request.uri)
@@ -65,12 +68,16 @@ class MainPage(webapp2.RequestHandler):
             tweet_text = self.request.get('tweet_text')
             myuser_key = ndb.Key('MyUser',user.user_id())
             myuser = myuser_key.get()
-            tweet_key = TweetModel(tweet_id=user.user_id(),tweet_text = tweet_text,tweet_time = datetime.now(),tweet_username = myuser.username)
+            myuser.no_of_tweets +=1
+            tweet_key = TweetModel(tweet_id=myuser.no_of_tweets,tweet_text = tweet_text,tweet_time = datetime.now(),tweet_username = myuser.username)
             tweet_key.put()
+            myuser.put()
             self.redirect('/')
+
 app = webapp2.WSGIApplication([
     ('/',MainPage),
     ('/userName',UsernamePage),
     ('/search',Search),
-    ('/user',User)
+    ('/user',User),
+    ('/editTweet',TweetEdit),
 ], debug =True)
