@@ -22,7 +22,9 @@ class User(webapp2.RequestHandler):
         myuser = myuser_key.get()
         same_user=''
         username_query = MyUser.query(MyUser.username == username).fetch()
+        logging.info(username_query)
         full_name=username_query[0].full_name
+        description = username_query[0].description
         tweet_list = []
 
 
@@ -36,11 +38,12 @@ class User(webapp2.RequestHandler):
         tweet_query = TweetModel.query(TweetModel.tweet_username == username).fetch(limit=50)
 
         for tweet in tweet_query:
-            tweet_list.append(tweet.tweet_text)
+            tweet_list.append(tweet)
 
         template_values = {
         'username': username,
         'full_name' : full_name,
+        'description' : description,
         'follow' : follow,
         'same_user' : same_user,
         'tweet_list' : tweet_list

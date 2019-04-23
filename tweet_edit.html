@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title> Assignment 2 </title>
+<!--  <link rel="stylesheet" href="/css/styles.css" type="text/css"> -->
+<link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<style>
+body { background: #212121 !important; }
+
+#container {
+  height: 100%;
+  width: 100%;
+  top: 2%;
+
+}
+.list-group-item {
+background-color: transparent;
+color: #e6ffff;
+border-bottom: 1px solid #e6ffff;
+}
+
+</style>
+</head>
+  <body>
+    <form class="text-center" action="/editTweet" method="post">
+      <input type="text" name="tweet_edit" value="{{tweet_query.tweet_text}}"> <br>
+      <input type="submit" name="button" value="Edit">
+      <input type="submit" name="button" value="Delete">
+      <input type="text" name="tweet_key" value="{{tweet_query.key.id()}}" hidden>
+    </form>
+  </body>
+</html>

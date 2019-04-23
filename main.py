@@ -41,7 +41,7 @@ class MainPage(webapp2.RequestHandler):
                 following_list = myuser.following
                 following_list.append(username)
                 for following in following_list:
-                    display_query = TweetModel.query(TweetModel.tweet_username == following).fetch(limit = 50)
+                    display_query = TweetModel.query(TweetModel.tweet_username == following).fetch()
                     for tweet in display_query:
                         tweet_list.append(tweet)
 
