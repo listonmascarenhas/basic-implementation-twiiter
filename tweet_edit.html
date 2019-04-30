@@ -19,15 +19,28 @@ background-color: transparent;
 color: #e6ffff;
 border-bottom: 1px solid #e6ffff;
 }
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
 
 </style>
 </head>
   <body>
+    <div id="container"class="mt-5">
+
+
     <form class="text-center" action="/editTweet" method="post">
-      <input type="text" name="tweet_edit" value="{{tweet_query.tweet_text}}"> <br>
-      <input type="submit" name="button" value="Edit">
+      <textarea rows="4" cols="50"  type="text" placeholder="What's happening?" name="tweet_edit" maxlength="280">{{tweet_query.tweet_text}}</textarea>
+      <input type="submit" name="button" value="Edit" >
+      <br>
       <input type="submit" name="button" value="Delete">
+      <input type="submit" class="mt-1" name="button" value="Back">
       <input type="text" name="tweet_key" value="{{tweet_query.key.id()}}" hidden>
     </form>
+    </div>
   </body>
 </html>

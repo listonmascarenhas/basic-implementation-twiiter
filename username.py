@@ -48,7 +48,7 @@ class UsernamePage(webapp2.RequestHandler):
                 username_query = MyUser.query(MyUser.username == username).fetch()
                 if not username_query:
                     if myuser==None:
-                        myuser = MyUser(id = user.user_id(),userid=user.user_id(), email_address = user.email(), username = username, full_name=full_name, description=description)
+                        myuser = MyUser(id = user.user_id(),userid=user.user_id(), email_address = user.email(), username = username, full_name=full_name, description=description,followers=[],following=[])
                         myuser.put()
                         self.redirect('/')
                 else :
@@ -58,3 +58,5 @@ class UsernamePage(webapp2.RequestHandler):
                     'myuser':myuser
                     }
                     self.response.write(template.render(template_values))
+        elif action == 'Back':
+            self.redirect('/')

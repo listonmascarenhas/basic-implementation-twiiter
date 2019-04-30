@@ -27,7 +27,9 @@ border-bottom: 1px solid #e6ffff;
   <body>
   <form class="text-center mt-3 " action="/search" method="post">
     <input type="text" name="tweet_search" value="" placeholder="Search">
-    <input type="submit" name="button" value="Search">
+    <br>
+    <input class=" mt-2 mr-1 ml-1" type="submit" name="button" value="Search">
+    <input type="submit" name="button" value="Back">
   </form>
   <ul class="text-left list-group ml-5 mr-5" style="list-style-type:none">
 {% for i in tweet_username_list %}

@@ -53,3 +53,5 @@ class Search(webapp2.RequestHandler):
             }
             template = JINJA_ENVIRONMENT.get_template('search.html')
             self.response.write(template.render(template_values))
+        if action == 'Back':
+            self.redirect('/')

@@ -10,8 +10,6 @@
   #container {
     height: 100%;
     width: 100%;
-    top: 2%;
-
 }
 .list-group-item {
 background-color: transparent;
@@ -28,29 +26,41 @@ border-bottom: 1px solid #e6ffff;
     {% if user %}
 
 
-    <table style="width:100%" class="text-center mt-3 mb:3 " >
+  <table style="width:100%" class="text-center mt-5 mb:3 " >
     <tr>
-    <td><a class="text-info "href="/search"> Search </a> </td>
-    <td> <a class="text-info" href="/userName?username={{username}}">Edit Profile </a> </td>
-    <td>  <a class="text-info" href='{{url}}'> Logout </a> </td>
+    <td><a href="/search"> Search </a> </td>
+    <td> <a href="/userName?username={{username}}">Edit Profile </a> </td>
+    <td>  <a href='{{url}}'> Logout </a> </td>
     </tr>
   </table>
+
+<!-- <nav class="nav mt-3" style="width:100%" >
+  <a class="nav-link mb-3" href="/search">Search</a>
+  <a class="nav-link mb-3" href="/userName?username={{username}}">Edit Profile</a>
+  <a class="nav-link mb-3" href="{{url}}">Logout</a>
+</nav> -->
   <p class="mt-5 text-center">
     <div class="text-center">
       <form class="text-center" action="/" method="post">
-        <input type="text" name="tweet_text" placeholder="What's happening?" maxlength="280">
+        <textarea rows="4" cols="50" type="text" name="tweet_text"  placeholder="What's happening?" maxlength="280"></textarea>
         <input type="submit" name="button" value="Post">
+        <input type="text" name="blobkey" value="{{blobkey}}" hidden>
       </form>
+      <form action="{{ upload_url }}" method="post" enctype="multipart/form-data">
+        Upload Image: <input type="file" name="file" accept="image/x-png,image/gif,image/jpeg" /><br/> <input class="mt-1" type="submit" value="Upload"/> </form>
       <ul class="text-left list-group ml-5 mr-5" style="list-style-type:none">
     {% for tweet in tweet_list|sort(attribute='tweet_time',reverse=True) %}
       {% if loop.index<=50 %}
-      <li class=" list-group-item  "><a href="user?username={{tweet.tweet_username}}">{{tweet.tweet_username}}
+      <li class=" list-group-item  ">
+        <a href="user?username={{tweet.tweet_username}}">{{tweet.tweet_username}}</a>
+        <br>
+        <img class="text-center" src="{{tweet.tweet_url}}" />
         {% if tweet.tweet_username==username %}
       <form class="text-right" action="/" method="post">
-    <a href="/editTweet?id={{tweet.tweet_id}}&username={{tweet.tweet_username}}">Edit</a>
+    <a href="/editTweet?id={{tweet.key.id()}}">Edit</a>
       </form>
         {% endif %}
-      </a>
+
         <p class="mt-3">{{tweet.tweet_text}}</p>
       </li>
       {% endif %}

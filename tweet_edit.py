@@ -21,14 +21,14 @@ class TweetEdit(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'text/html'
         template = JINJA_ENVIRONMENT.get_template('tweet_edit.html')
         id = self.request.get('id')
-        username = self.request.get('username')
-        tweet_query = TweetModel.query(ndb.AND(TweetModel.tweet_id==int(id)),
-                                        TweetModel.tweet_username==username).fetch()
-
-
+        # username = self.request.get('username')
+        # tweet_query = TweetModel.query(ndb.AND(TweetModel.tweet_id==int(id)),
+        #                                 TweetModel.tweet_username==username).fetch()
+        tweet_key = ndb.Key('TweetModel',int(id))
+        tweet = tweet_key.get()
         #logging.info(tweet_query.key.id())
         template_values = {
-            'tweet_query' : tweet_query[0]
+            'tweet_query' : tweet
         }
         self.response.write(template.render(template_values))
 
@@ -38,7 +38,7 @@ class TweetEdit(webapp2.RequestHandler):
         tweet_key = self.request.get('tweet_key')
         if action == 'Edit':
             tweet_edit = self.request.get('tweet_edit')
-            tweet_key = ndb.Key('TweetModel',tweet_key)
+            tweet_key = ndb.Key('TweetModel',int(tweet_key))
             tweet = tweet_key.get()
             tweet.tweet_text = tweet_edit
             tweet.tweet_time = datetime.now()
@@ -49,4 +49,7 @@ class TweetEdit(webapp2.RequestHandler):
             tweet = tweet_key.get()
             # tweet = TweetModel.get_by_id(int(tweet_key))
             tweet.key.delete()
+
+        elif action == 'Back':
+            self.redirect('')
         self.redirect('/')

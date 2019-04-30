@@ -11,7 +11,7 @@ class MyUser(ndb.Model):
     no_of_tweets = ndb.IntegerProperty(default = 0)
 
 class TweetModel(ndb.Model):
-    tweet_id = ndb.IntegerProperty()
     tweet_text = ndb.StringProperty()
     tweet_time = ndb.DateTimeProperty()
     tweet_username = ndb.StringProperty()
+    tweet_url = ndb.StringProperty()

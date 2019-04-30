@@ -26,7 +26,8 @@ class User(webapp2.RequestHandler):
         full_name=username_query[0].full_name
         description = username_query[0].description
         tweet_list = []
-
+        followers_count = len(username_query[0].followers)
+        following_count = len(username_query[0].following)
 
         if myuser.username == username:
             same_user = 'yes'
@@ -45,6 +46,8 @@ class User(webapp2.RequestHandler):
         'full_name' : full_name,
         'description' : description,
         'follow' : follow,
+        'followers_count' : followers_count,
+        'following_count' : following_count,
         'same_user' : same_user,
         'tweet_list' : tweet_list
         }
@@ -58,7 +61,9 @@ class User(webapp2.RequestHandler):
         myuser_key = ndb.Key('MyUser',user.user_id())
         myuser = myuser_key.get()
         follow = ''
-        if action == 'Follow':
+        if self.request.get('back') == 'Back':
+            self.redirect('/')
+        elif action == 'Follow':
             username = self.request.get('username')
             myuser.following.append(username)
             username_query = MyUser.query(MyUser.username == username).fetch()
@@ -68,6 +73,9 @@ class User(webapp2.RequestHandler):
             user_profile.followers.append(myuser.username)
             follow = 'Follow'
             logging.info(follow)
+            myuser.put()
+            user_profile.put()
+            self.redirect('/user?username='+username)
         elif action== 'Unfollow':
             username = self.request.get('username')
             myuser.following.remove(username)
@@ -79,6 +87,6 @@ class User(webapp2.RequestHandler):
             user_profile.followers.remove(myuser.username)
             follow = 'Unfollow'
             logging.info(follow)
-        myuser.put()
-        user_profile.put()
-        self.redirect('/user?username='+username)
+            myuser.put()
+            user_profile.put()
+            self.redirect('/user?username='+username)
